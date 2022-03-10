@@ -2,7 +2,6 @@
   <div class="header">
     <div>
       <h2 class="title">Hi, {{ user.name }}</h2>
-
       <b-dropdown variant="outline-primary" size="sm" text="Select Adress">
         <b-dropdown-item
           class="text"
@@ -14,7 +13,6 @@
         >
       </b-dropdown>
     </div>
-
     <div class="mb-4 mr-2">
       <router-link class="mt-1" to="checkout"
         >{{ cartItens.length }}<img class="ml-2" src="../assets/carrinho.svg"
@@ -76,8 +74,6 @@ export default {
   width: 26px;
   height: 26px;
 }
-
-
 
 .text {
   text-align: left;

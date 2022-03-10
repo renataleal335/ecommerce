@@ -6,8 +6,9 @@
     </div>
 
     <div class="container mt-5">
+      
       <div class="row justify-content-start">
-        <div class="col-2">
+        <div class="col-3">
           <h3 class="title">Products</h3>
         </div>
         <div class="col-6">
@@ -15,35 +16,34 @@
             <option
               v-for="category in this.categories"
               :key="category"
-              aria-placeholder="Slecione uma categoria"
+              :value="category"
             >
               {{ category }}
             </option>
           </b-select>
         </div>
       </div>
+      <div>
+    
+  </div>
     </div>
 
-    <div
-      class="list-container mt-5"
-      v-for="product in products"
-      :key="product.id"
-      :value="product.id"
-    >
-      <div class="row justify-content-center">
-        <div class="col-6">
-          <div class="product-card">
-            <p class="price-product">{{ product.price | filterPrice }}</p>
-            <img :src="product.image" />
-
-            <p class="small-text mt-2">{{ product.title }}</p>
-            <p class="small-text">{{ product.category }}</p>
-
-            <b-button @click="getProduct(product.id)"> Purchase </b-button>
-          </div>
+    <div class="text-center list-container mt-5 mb-4">
+      <div
+        class="container"
+        v-for="product in products"
+        :key="product.id"
+        :value="product.id"
+      >
+        <div class="product-card">
+          <p class="price-product">{{ product.price | filterPrice }}</p>
+          <img :src="product.image" />
+          <p class="small-text mt-2">{{ product.category }}</p>
+          <b-button @click="getProduct(product.id)"> Purchase </b-button>
         </div>
       </div>
     </div>
+
     <b-modal ref="modalProduct" hide-header hide-footer>
       <modal-product
         :quantity="quantity"
@@ -95,9 +95,9 @@ export default {
   methods: {
     totalCart() {
       if (this.quantity === 1) {
-        let total =+ this.currentProduct.price;
+        let total = +this.currentProduct.price;
         this.valueTotal = total;
-         this.currentProduct.finalValue = this.valueTotal;
+        this.currentProduct.finalValue = this.valueTotal;
         this.currentProduct.finalQuantity = this.quantity;
         return;
       } else {
@@ -206,34 +206,36 @@ export default {
 </script>
 <style scoped>
 .product-card {
-  top: 505px;
-  left: 34px;
-  width: 170px;
-  height: max-content;
+  max-width: 100%;
+  height: 100%;
   opacity: 1;
   box-shadow: 0px 2px 5px #00000029;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
   padding: 10px;
-  margin-left: 10px;
 }
 
 img {
-  width: 95px;
-  height: 126px;
+  max-width: 100%;
+  height: 156px;
   margin: 0 auto;
 }
 
 .list-container {
-  display: flex;
-  float: left (3);
+  display: grid;
+  grid-template-columns: repeat(2, 0.5fr);
+  max-width: 100%;
+  overflow-x: hidden;
+  margin: 0 auto;
+  grid-gap: 10px;
 }
 
 .price-product {
   text-align: left;
   font-family: "Lato", sans-serif;
-  font-size: 18px;
+  font-weight: bold;
+  font-size: 20px;
   letter-spacing: 0px;
   color: #3b3f51;
   opacity: 1;
@@ -242,6 +244,7 @@ img {
 .small-text {
   text-align: left;
   font-family: "Lato", sans-serif;
+  font-size: 16px;
   color: #3b3f51;
   opacity: 1;
 }
@@ -258,25 +261,20 @@ button {
   color: #ffffff;
   text-transform: uppercase;
   opacity: 1;
+  width: 50%;
+  margin: 0 auto;
 }
 
-select {
-  top: 418px;
-  left: 219px;
+select{
   width: 176px;
   height: 48px;
-  background: #ffffff 0% 0% no-repeat padding-box;
+  background: #ffffff !important;
   box-shadow: 0px 2px 5px #26303c33;
   border-radius: 4px;
   opacity: 1;
-}
-
-.section {
-  display: flex;
   text-align: left;
-  font-family: "Lato", sans-serif;
+  letter-spacing: 0px;
   color: #3b3f51;
-  opacity: 1;
 }
 </style>
 
