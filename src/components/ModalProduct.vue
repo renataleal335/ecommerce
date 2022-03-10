@@ -11,7 +11,11 @@
         <p class="text mt-3">
           Price : {{ currentProduct.price | filterPrice }}
         </p>
-        <b-button :disabled="this.quantity === 0" class="button-modal mr-2" @click="$emit('decrease')">
+        <b-button
+          :disabled="this.quantity === 0"
+          class="button-modal mr-2"
+          @click="$emit('decrease')"
+        >
           -
         </b-button>
         <span style="padding: 10px" class="text-button mb-4"
@@ -30,21 +34,19 @@
           <p class="text" v-if="this.quantity > 1">
             Total: <span class="total"> {{ valueTotal | filterPrice }} </span>
           </p>
-        </div>
-      </div>
-      <div class="row justify-content-start mt-4">
-        <div class="col-6">
-          <b-button style="float: center" :disabled="this.quantity === 0" variant="primary" @click="$emit('adcProduct')">
-            Purchase
-          </b-button>
-        </div>
-        <div class="col-6">
           <b-button
-            style="float: right"
+            style="margin: 10px"
             @click="$emit('hideModal')"
             variant="danger"
             >Cancel</b-button
           >
+          <b-button
+            :disabled="this.quantity === 0"
+            variant="primary"
+            @click="$emit('adcProduct')"
+          >
+            Purchase
+          </b-button>
         </div>
       </div>
     </div>
@@ -123,8 +125,6 @@ img {
   font-weight: normal;
   opacity: 1;
 }
-
-
 
 button {
   text-align: center !important;
