@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div>
-      <h2>Hi, {{ user.name }}</h2>
+      <h2 class="title">Hi, {{ user.name }}</h2>
 
       <b-dropdown variant="outline-primary" size="sm" text="Select Adress">
         <b-dropdown-item
@@ -77,13 +77,7 @@ export default {
   height: 26px;
 }
 
-h2 {
-  text-align: left;
-  font-family: "Lato-Bold" sans-serif;
-  letter-spacing: 0px;
-  color: #3b3f51;
-  opacity: 1;
-}
+
 
 .text {
   text-align: left;

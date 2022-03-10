@@ -11,11 +11,7 @@
         <p class="text mt-3">
           Price : {{ currentProduct.price | filterPrice }}
         </p>
-        <b-button
-          :disabled="this.quantity <= 1"
-          class="button-modal mr-2"
-          @click="$emit('decrease')"
-        >
+        <b-button :disabled="this.quantity === 0" class="button-modal mr-2" @click="$emit('decrease')">
           -
         </b-button>
         <span style="padding: 10px" class="text-button mb-4"
@@ -38,7 +34,7 @@
       </div>
       <div class="row justify-content-start mt-4">
         <div class="col-6">
-          <b-button class="add-button" @click="$emit('adcProduct')">
+          <b-button style="float: center" :disabled="this.quantity === 0" variant="primary" @click="$emit('adcProduct')">
             Purchase
           </b-button>
         </div>
@@ -63,6 +59,7 @@ export default {
     },
     quantity: {
       type: Number,
+      default: 1,
     },
     valueTotal: {
       type: Number,
@@ -71,7 +68,6 @@ export default {
   data() {
     return {};
   },
-
   filters: {
     filterPrice(value) {
       return value.toLocaleString("en-us", {
@@ -128,13 +124,7 @@ img {
   opacity: 1;
 }
 
-.add-button {
-  background: #00519d 0% 0% no-repeat padding-box !important;
-  box-shadow: 0px 2px 5px #26303c33 !important;
-  border-radius: 4px !important;
-  opacity: 1 !important;
-  width: 100% !important;
-}
+
 
 button {
   text-align: center !important;

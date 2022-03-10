@@ -1,11 +1,14 @@
 <template>
   <div>
     <the-header :cartItens="cartItens"></the-header>
+    <div class="container mt-5">
+      <Busca :products="products" />
+    </div>
 
     <div class="container mt-5">
       <div class="row justify-content-start">
         <div class="col-2">
-          <h3>Products</h3>
+          <h3 class="title">Products</h3>
         </div>
         <div class="col-6">
           <b-select v-model="selected">
@@ -58,12 +61,14 @@
 import { api } from "@/service.js";
 import TheHeader from "../components/TheHeader.vue";
 import ModalProduct from "./ModalProduct.vue";
+import Busca from "./Busca.vue";
 
 export default {
   name: "ProductList",
   components: {
     TheHeader,
     ModalProduct,
+    Busca,
   },
   data() {
     return {
@@ -72,10 +77,10 @@ export default {
       cartItens: [],
       selected: this.value,
       currentProduct: {
-        finalQuantity: null,
-        finalValue: null,
+        finalQuantity: 1,
+        finalValue: 0,
       },
-      quantity: 1,
+      quantity: 0,
       valueTotal: 0,
     };
   },
@@ -90,25 +95,25 @@ export default {
   methods: {
     totalCart() {
       if (this.quantity === 1) {
-        this.valueTotal = this.currentProduct.price;
-        this.currentProduct.finalValue = this.valueTotal;
-        return this.valueTotal;
+        let total =+ this.currentProduct.price;
+        this.valueTotal = total;
+         this.currentProduct.finalValue = this.valueTotal;
+        this.currentProduct.finalQuantity = this.quantity;
+        return;
       } else {
         let total = this.quantity * this.currentProduct.price;
         this.valueTotal = +total;
         this.currentProduct.finalValue = this.valueTotal;
-        console.log(this.currentProduct.finalValue);
-        return this.valueTotal;
+        this.currentProduct.finalQuantity = this.quantity;
+        return;
       }
     },
     decreaseCart() {
-      if (this.quantity > 1) {
-        let total = this.quantity * this.currentProduct.price;
-        this.valueTotal = -total;
-        this.currentProduct.finalValue = this.valueTotal;
-        console.log(this.currentProduct.finalValue);
-        return this.valueTotal;
-      }
+      let total = this.quantity * this.currentProduct.price;
+      this.valueTotal = -total;
+      this.currentProduct.finalValue = this.valueTotal;
+
+      return this.valueTotal;
     },
     getProducts() {
       api.get(this.url).then((response) => {
@@ -132,8 +137,16 @@ export default {
       }
     },
     adcProduct() {
-      const { id, title, price, image, finalValue, finalQuantity } =
-        this.currentProduct;
+      const {
+        id,
+        title,
+        price,
+        image,
+        finalValue,
+        finalQuantity,
+        description,
+        category,
+      } = this.currentProduct;
       this.cartItens.push({
         id,
         title,
@@ -141,26 +154,27 @@ export default {
         image,
         finalValue,
         finalQuantity,
+        description,
+        category,
       });
-     
+
       this.hideModal();
     },
     hideModal() {
-      this.quantity = 1
+      this.quantity = this.quantity;
       this.$refs.modalProduct.hide();
-      console.log(quantity)
-      return value
-      
     },
 
-    addItem(id) {
+    addItem() {
       this.quantity++;
       this.totalCart();
       this.currentProduct.finalQuantity = this.quantity;
+      return;
     },
-    decrease(id) {
+    decrease() {
       this.quantity--;
       this.decreaseCart();
+      this.currentProduct.finalQuantity = this.quantity;
     },
   },
   watch: {
@@ -170,9 +184,6 @@ export default {
     cartItens() {
       localStorage.setItem("itens", JSON.stringify(this.cartItens));
     },
-    hideModal(){
-      this.quantity = this.quantity;
-    }
   },
   computed: {
     url() {
@@ -264,14 +275,6 @@ select {
   display: flex;
   text-align: left;
   font-family: "Lato", sans-serif;
-  color: #3b3f51;
-  opacity: 1;
-}
-
-h3 {
-  text-align: left;
-  font-family: "Lato-Bold" sans-serif;
-
   color: #3b3f51;
   opacity: 1;
 }

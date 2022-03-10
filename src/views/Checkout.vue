@@ -25,23 +25,23 @@
       >
         <div class="container">
           <div class="row justify-content-end">
-            <div class="col">
+            <div class="col-lg col-sm-12">
               <img :alt="item.description" :src="item.image" />
             </div>
             <div class="col">
               <p class="title">{{ item.title }}</p>
               <div class="container">
                 <div class="row justify-content-center">
-                  <div class="col-6">
+                  <div class="col-8">
                     <b-button
                       class="button-item"
                       @click="decreaseCart(item.id)"
                     >
                       -
                     </b-button>
-                    <span style="padding: 10px">
-                      {{ item.finalQuantity }}
-                    </span>
+
+                    {{ item.finalQuantity }}
+
                     <b-button
                       class="button-item"
                       @click.prevent="addItem(item.id)"
@@ -49,38 +49,44 @@
                       +
                     </b-button>
                   </div>
-
                   <div class="col-6">
-                    <p class="text">
+                    <p class="text text-center mt-3">
                       Total
                       <span class="title">
-                        {{ item.finalValue| filterPrice}}
+                        {{ item.finalValue }}
                       </span>
                     </p>
+                  </div>
+                  <div>
+                    <button
+                      @click.prevent="removeItem(index)"
+                      type="button"
+                      class="btn btn-outline-danger mt-3"
+                    >
+                      Remove items
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="float-div ml-3">
-          <button
-            @click.prevent="removeItem(index)"
-            type="button"
-            class="btn btn-outline-danger"
-          >
-            Remove
-          </button>
-        </div>
+        <div class="ml-3"></div>
       </div>
 
-      <div class="container mt-5">
+      <div class="container mt-5 mb-5">
         <p class="title-header text-center">Detalhes do pagamento</p>
-        <div class="card-car text">
-          <p>Número de itens: {{ this.newQtd }}</p>
 
-          <p>Subtotal: {{ this.newTotal }}</p>
+        <div class="card-car text">
+         
+          <p class="col-6">Items: {{ newQtd }}</p>
+          <br />
+          <p class="col-6">Subtotal: {{ newTotal }}</p>
         </div>
+
+        <b-button @click.prevent="finalizePurchase">
+          Finalize purchase</b-button
+        >
       </div>
     </main>
   </div>
@@ -94,13 +100,18 @@ export default {
       productId: null,
       newTotal: null,
       newQtd: null,
+      total: null,
+      quantity: null,
     };
   },
   created() {
     this.itens = localStorage.getItem("itens")
       ? JSON.parse(localStorage.getItem("itens"))
       : [];
+
+      this.finalizePurchase();
   },
+
   methods: {
     removeItem(index) {
       this.itens.splice(index, 1);
@@ -110,7 +121,7 @@ export default {
     addItem(id) {
       this.productId = this.itens.find((item) => item.id === id);
       this.productId.finalQuantity++;
-      console.log(this.productId)
+
       this.totalCart();
     },
     decreaseCart(id) {
@@ -123,14 +134,31 @@ export default {
       this.newQtd = this.productId.finalQuantity;
       this.newTotal = total;
       this.productId.finalValue = this.newTotal;
-      return this.productId.finalValue;
+      return this.newTotal;
     },
     totalDecrease() {
       let total = this.productId.finalQuantity * this.productId.price;
       this.newQtd = this.productId.finalQuantity;
       this.newTotal = total;
       this.productId.finalValue = this.newTotal;
-      return this.productId.finalValue;
+      if (this.newTotal <= 0) {
+        this.removeItem();
+      }
+      return this.newTotal;
+    },
+
+    finalizePurchase() {
+      let total = 0;
+      let qtd = 0;
+      if (this.itens.length) {
+        this.itens.forEach((item) => {
+          total += item.finalValue;
+          qtd += item.finalQuantity;
+          this.newQtd = qtd;
+          this.newTotal = total;
+          return;
+        });
+      }
     },
   },
   filters: {
@@ -230,10 +258,6 @@ header {
 
 button :hover {
   background: #fff;
-}
-
-p {
-  white-space: nowrap;
 }
 
 img {
