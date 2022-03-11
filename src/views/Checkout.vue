@@ -1,21 +1,20 @@
 <template>
   <div class="section">
     <header>
-      <p class="title-header mt-3">
-        <router-link class="link" to="/">
+      <router-link class="link" to="/">
+        <p class="link title-header mt-3">
           <b-icon
-            class="icon ml-2"
+            class="link icon ml-2"
             stacked
-            icon="backspace"
-            size="small"
+            icon="arrow-left-short"
+            size="lg"
             variant="primary"
           ></b-icon>
-        </router-link>
 
-        Meu carrinho
-      </p>
+          Meu carrinho
+        </p>
+      </router-link>
     </header>
-
     <main class="container">
       <div
         class="card-car mt-4 text-center"
@@ -25,7 +24,7 @@
       >
         <div class="container">
           <div class="row justify-content-end">
-            <div class="col-lg col-sm-12">
+            <div class="col-lg col-sm-12 mt-5">
               <img :alt="item.description" :src="item.image" />
             </div>
             <div class="col">
@@ -40,7 +39,7 @@
                       -
                     </b-button>
 
-                    {{ item.finalQuantity }}
+                    <span class="text"> {{ item.finalQuantity }} </span>
 
                     <b-button
                       class="button-item"
@@ -53,7 +52,7 @@
                     <p class="text text-center mt-3">
                       Total
                       <span class="title">
-                        {{ item.finalValue }}
+                        {{ item.finalValue | filterPrice }}
                       </span>
                     </p>
                   </div>
@@ -71,22 +70,19 @@
             </div>
           </div>
         </div>
-        <div class="ml-3"></div>
       </div>
 
       <div class="container mt-5 mb-5">
-        <p class="title-header text-center">Detalhes do pagamento</p>
-
-        <div class="card-car text">
-         
-          <p class="col-6">Items: {{ newQtd }}</p>
-          <br />
-          <p class="col-6">Subtotal: {{ newTotal }}</p>
-        </div>
-
+        <p class="title-header text-center mt-4 mb-3">Detalhes do pagamento</p>
+        <div class="card-car text mt-2">
+          <p class="col-6 mt-4 text-center">Items: {{ newQtd }}</p>
+          <p class="col-6 mt-4 text-center">
+            Subtotal: {{ newTotal | filterPrice }}
+          </p>
+        </div> 
         <b-button @click.prevent="finalizePurchase">
-          Finalize purchase</b-button
-        >
+              Finalize purchase</b-button
+            >
       </div>
     </main>
   </div>
@@ -109,7 +105,7 @@ export default {
       ? JSON.parse(localStorage.getItem("itens"))
       : [];
 
-      this.finalizePurchase();
+    this.finalizePurchase();
   },
 
   methods: {
@@ -130,7 +126,7 @@ export default {
       this.totalDecrease();
     },
     totalCart() {
-      let total = this.productId.finalQuantity * this.productId.price;
+      let total = this.newQtd * this.productId.price;
       this.newQtd = this.productId.finalQuantity;
       this.newTotal = total;
       this.productId.finalValue = this.newTotal;
@@ -172,9 +168,11 @@ export default {
 };
 </script>
 <style scoped>
+body {
+  background: #f5f5f5;
+}
 .card-car {
-  width: 100%;
-  max-width: max-content;
+  width: 50%;
   height: 100%;
   background: #ffffff 0% 0% no-repeat padding-box;
   box-shadow: 0px 2px 5px #00000029;
@@ -182,14 +180,13 @@ export default {
   display: flex;
   justify-content: center;
   align-items: start;
-  padding: 25px;
+  padding: 10px;
   opacity: 1;
   margin: 0 auto;
 }
 
 .link {
   text-decoration: none;
-  color: black;
   list-style: none;
 }
 
@@ -246,6 +243,8 @@ export default {
   color: #0550a0 !important;
   border: none !important;
   width: max-content !important;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 header {

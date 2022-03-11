@@ -6,12 +6,12 @@
     </div>
 
     <div class="container mt-5">
-      
       <div class="row justify-content-start">
-        <div class="col-3">
+        <div class="col">
           <h3 class="title">Products</h3>
         </div>
-        <div class="col-6">
+        <div class="col ml-4">
+          <p class="text">Categories</p>
           <b-select v-model="selected">
             <option
               v-for="category in this.categories"
@@ -23,9 +23,7 @@
           </b-select>
         </div>
       </div>
-      <div>
-    
-  </div>
+      <div></div>
     </div>
 
     <div class="text-center list-container mt-5 mb-4">
@@ -157,7 +155,7 @@ export default {
         description,
         category,
       });
-
+      this.quantity = 0;
       this.hideModal();
     },
     hideModal() {
@@ -265,9 +263,7 @@ button {
   margin: 0 auto;
 }
 
-
-
-select{
+select {
   width: 176px;
   height: 48px;
   background: #ffffff !important;

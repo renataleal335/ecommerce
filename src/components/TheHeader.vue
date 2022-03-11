@@ -13,18 +13,10 @@
         >
       </b-dropdown>
     </div>
-    <div class="mb-4 mr-2">
-      <router-link class="mt-1" to="checkout"
+    <div class="mb-4 mr-4">
+      <router-link class="mt-1 text" to="checkout"
         >{{ cartItens.length }}<img class="ml-2" src="../assets/carrinho.svg"
       /></router-link>
-      |
-      <b-icon
-        class="icon mt-1"
-        stacked
-        icon="person-fill"
-        size="small"
-        variant="primary"
-      ></b-icon>
     </div>
   </div>
 </template>
@@ -62,6 +54,19 @@ export default {
 </script>
 
 <style scoped>
+img {
+  max-width: 56px;
+  height: 56px;
+  margin: 0 auto;
+}
+
+.text {
+  font-family:"Lato-Bold" sans-serif ;
+  font-weight: bold;
+  font-size: 20px;
+  letter-spacing: 0px;
+  color: #3b3f51;
+}
 .header {
   display: flex;
   align-items: flex-end;
