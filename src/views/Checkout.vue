@@ -79,10 +79,10 @@
           <p class="col-6 mt-4 text-center">
             Subtotal: {{ newTotal | filterPrice }}
           </p>
-        </div> 
+        </div>
         <b-button @click.prevent="finalizePurchase">
-              Finalize purchase</b-button
-            >
+          Finalize purchase</b-button
+        >
       </div>
     </main>
   </div>
@@ -108,6 +108,12 @@ export default {
     this.finalizePurchase();
   },
 
+  watch: {
+    addItem() {
+      this.updateTotal();
+    },
+  },
+
   methods: {
     removeItem(index) {
       this.itens.splice(index, 1);
@@ -117,21 +123,18 @@ export default {
     addItem(id) {
       this.productId = this.itens.find((item) => item.id === id);
       this.productId.finalQuantity++;
-
-      this.totalCart();
+      this.newQtd++;
+      let total = this.productId.finalQuantity * this.productId.price;
+      this.productId.finalValue = total;
+      this.newTotal += this.productId.price;
+      return;
     },
     decreaseCart(id) {
       this.productId = this.itens.find((item) => item.id === id);
       this.productId.finalQuantity--;
       this.totalDecrease();
     },
-    totalCart() {
-      let total = this.newQtd * this.productId.price;
-      this.newQtd = this.productId.finalQuantity;
-      this.newTotal = total;
-      this.productId.finalValue = this.newTotal;
-      return this.newTotal;
-    },
+
     totalDecrease() {
       let total = this.productId.finalQuantity * this.productId.price;
       this.newQtd = this.productId.finalQuantity;
@@ -154,6 +157,11 @@ export default {
           this.newTotal = total;
           return;
         });
+      }
+    },
+    updateTotal() {
+      if (this.finalQuantity > this.newQtd) {
+        this.finalizePurchase();
       }
     },
   },
