@@ -108,12 +108,6 @@ export default {
     this.finalizePurchase();
   },
 
-  watch: {
-    addItem() {
-      this.updateTotal();
-    },
-  },
-
   methods: {
     removeItem(index) {
       this.itens.splice(index, 1);
@@ -132,18 +126,11 @@ export default {
     decreaseCart(id) {
       this.productId = this.itens.find((item) => item.id === id);
       this.productId.finalQuantity--;
-      this.totalDecrease();
-    },
-
-    totalDecrease() {
+      this.newQtd--;
       let total = this.productId.finalQuantity * this.productId.price;
-      this.newQtd = this.productId.finalQuantity;
-      this.newTotal = total;
-      this.productId.finalValue = this.newTotal;
-      if (this.newTotal <= 0) {
-        this.removeItem();
-      }
-      return this.newTotal;
+      this.productId.finalValue = total;
+      this.newTotal -= this.productId.price;
+      return;
     },
 
     finalizePurchase() {
