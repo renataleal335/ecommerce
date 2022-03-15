@@ -130,6 +130,9 @@ export default {
       let total = this.productId.finalQuantity * this.productId.price;
       this.productId.finalValue = total;
       this.newTotal -= this.productId.price;
+      if (this.productId.finalValue <= 0) {
+        this.removeItem();
+      }
       return;
     },
 
